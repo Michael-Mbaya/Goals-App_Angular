@@ -42,7 +42,7 @@ export class GoalComponent implements OnInit {
     let goalLength = this.goals.length;
     goal.id = goalLength+1;
     goal.completeDate = new Date(goal.completeDate)
-    this.goals.push(goal)
+    this.goals.unshift(goal)    //unshift(goal) to put in first, push(goal) to put in last
   }
 
   constructor() { }

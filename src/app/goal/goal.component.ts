@@ -32,7 +32,11 @@ export class GoalComponent implements OnInit {
     this.http.get<ApiResponse>("http://quotes.stormconsultancy.co.uk/random.json").subscribe(data=>{
       // Succesful API request
       this.quote = new Quote(data.author, data.quote)
-    })
+    }),err=>{       //error handling, quote displayed if api is unresponsive & log message
+      this.quote = new Quote("Winston Churchill","Never never give up!");
+      console.log("An error occurred");
+                    //messing with http on line 32 to test err
+    }
   }
 
   toggleDetails(index){

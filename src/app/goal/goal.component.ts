@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Goal } from '../goal';
 import { GoalService } from '../goal-service/goal.service';
 import { AlertService } from '../alert-service/alert.service';
+import { HttpClient } from '@angular/common/http';
+import { Quote } from '../quote-class/quote';
 
 @Component({
   selector: 'app-goal',
@@ -10,6 +12,28 @@ import { AlertService } from '../alert-service/alert.service';
 })
 
 export class GoalComponent implements OnInit {
+
+  goals: Goal[];
+  alertService:AlertService;
+  quote:Quote;
+  
+  constructor(goalService:GoalService,alertService:AlertService,private http:HttpClient) {
+    this.goals = goalService.getGoals()
+    this.alertService = alertService;
+  }
+
+  ngOnInit() {
+
+    interface ApiResponse{
+      author:string;
+      quote:string;
+    }
+
+    this.http.get<ApiResponse>("http://quotes.stormconsultancy.co.uk/random.json").subscribe(data=>{
+      // Succesful API request
+      this.quote = new Quote(data.author, data.quote)
+    })
+  }
 
   toggleDetails(index){
     this.goals[index].showDescription = !this.goals[index].showDescription;
@@ -31,21 +55,6 @@ export class GoalComponent implements OnInit {
         this.alertService.alertMe("The goal has been deleted")
       }
     }
-  }
-
-
-
-  goals: Goal[];
-  alertService:AlertService;
-  
-  constructor(goalService:GoalService,alertService:AlertService) {
-    this.goals = goalService.getGoals()
-    this.alertService = alertService;
-  }
-
-  // constructor(){}
-
-  ngOnInit() {
   }
 
 }

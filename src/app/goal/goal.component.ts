@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Goal } from '../goal';
 import { GoalService } from '../goal-service/goal.service';
 import { AlertService } from '../alert-service/alert.service';
+import { QuoteRequestService } from '../quote-http/quote-request.service';
 import { HttpClient } from '@angular/common/http';
 import { Quote } from '../quote-class/quote';
 
@@ -17,26 +18,17 @@ export class GoalComponent implements OnInit {
   alertService:AlertService;
   quote:Quote;
   
-  constructor(goalService:GoalService,alertService:AlertService,private http:HttpClient) {
+  constructor(goalService:GoalService,alertService:AlertService,private quoteService:QuoteRequestService) {
     this.goals = goalService.getGoals()
     this.alertService = alertService;
+
   }
 
   ngOnInit() {
 
-    interface ApiResponse{
-      author:string;
-      quote:string;
-    }
+    this.quoteService.quoteRequest()
+    this.quote = this.quoteService.quote
 
-    this.http.get<ApiResponse>("http://quotes.stormconsultancy.co.uk/random.json").subscribe(data=>{
-      // Succesful API request
-      this.quote = new Quote(data.author, data.quote)
-    }),err=>{       //error handling, quote displayed if api is unresponsive & log message
-      this.quote = new Quote("Winston Churchill","Never never give up!");
-      console.log("An error occurred");
-                    //messing with http on line 32 to test err
-    }
   }
 
   toggleDetails(index){

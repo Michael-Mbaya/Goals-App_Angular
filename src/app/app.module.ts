@@ -7,10 +7,13 @@ import { GoalComponent } from './goal/goal.component';
 import { GoalDetailComponent } from './goal-detail/goal-detail.component';
 import { StrikethroughDirective } from './strikethrough.directive';
 import { DateCountPipe } from './date-count.pipe';
+//for http client and progress bar(loader) while loading API
 import { HttpClientModule } from '@angular/common/http';
+import { NgProgressModule } from '@ngx-progressbar/core';
+import { NgProgressHttpClientModule } from '@ngx-progressbar/http-client';
 
 
-// import { NgModule } from '@angular/core';
+// for the forms;
 import { FormsModule } from '@angular/forms';
 import { GoalFormComponent } from './goal-form/goal-form.component';
 
@@ -28,7 +31,9 @@ import { GoalFormComponent } from './goal-form/goal-form.component';
     AppRoutingModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgProgressModule.forRoot(),
+    NgProgressHttpClientModule
   ],
 
   providers: [],
